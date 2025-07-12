@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.svg';
+import React from 'react';
+
+function usePrevious(value) {
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+}
 
 function App() {
+  const [val, setVal] = React.useState("");
+  const prevVal = usePrevious(val);
+  const ref = React.useRef();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1>Новое-старое</h1>
+      <p>Стало: {val}<br/>
+      Было: {prevVal}</p>
+      <input ref={ref} placeholder='Введите новое значение' required/>
+      <button onClick={() => setVal(ref.current.value)}>Сохранить</button>
     </div>
   );
 }
